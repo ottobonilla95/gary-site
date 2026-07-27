@@ -6,6 +6,7 @@ import {
   MessageCircle,
   MoveRight,
 } from "lucide-react";
+import { BookingDialog } from "@/components/booking-dialog";
 import { frequentlyAskedQuestions, services } from "@/data/content";
 import { generalBookingMessage, getWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -41,9 +42,7 @@ export default function HomePage() {
             <p>
               Vi hjälper privatpersoner och företag att flytta tryggt, effektivt och utan onödig stress — i hela Sverige.
             </p>
-            <a className="button button--ivory hero-booking" href={bookingUrl} target="_blank" rel="noreferrer">
-              <MessageCircle /> Boka din flytt <ArrowUpRight />
-            </a>
+            <BookingDialog />
           </div>
 
           <div className="lux-hero__visual">
