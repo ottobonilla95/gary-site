@@ -1,20 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { ArrowUpRight, Menu, MessageCircle, X } from "lucide-react";
 import { useState } from "react";
 import { Brand } from "./brand";
+import { generalBookingMessage, getWhatsAppUrl } from "@/lib/whatsapp";
 
 const links = [
-  { href: "/", label: "Hem" },
-  { href: "/services", label: "Tjänster" },
-  { href: "/pricing", label: "Priser" },
-  { href: "/contact", label: "Kontakt" },
+  { href: "/#services", label: "Tjänster" },
+  { href: "/#process", label: "Så fungerar det" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function SiteHeader() {
-  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   return (
@@ -23,14 +21,14 @@ export function SiteHeader() {
         <Brand />
         <nav className="desktop-nav" aria-label="Huvudmeny">
           {links.map((link) => (
-            <Link className={pathname === link.href ? "active" : ""} href={link.href} key={link.href}>
+            <Link href={link.href} key={link.href}>
               {link.label}
             </Link>
           ))}
         </nav>
-        <Link className="button button--yellow header-quote" href="/#quote-form">
-          Begär Offert
-        </Link>
+        <a className="button button--light header-quote" href={getWhatsAppUrl(generalBookingMessage)} target="_blank" rel="noreferrer">
+          <MessageCircle /> Planera din flytt <ArrowUpRight />
+        </a>
         <button
           className="mobile-toggle"
           type="button"
@@ -48,9 +46,9 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
-          <Link className="button button--yellow" href="/#quote-form" onClick={() => setOpen(false)}>
-            Begär Offert
-          </Link>
+          <a className="button button--light" href={getWhatsAppUrl(generalBookingMessage)} target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>
+            <MessageCircle /> Planera din flytt
+          </a>
         </nav>
       )}
     </header>

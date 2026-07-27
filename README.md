@@ -1,6 +1,15 @@
-# gary-site
+# Flyttiva
 
-Next.js recreation of the Flyttiva website, including the homepage, services, pricing, contact, responsive navigation, forms, robots rules, and sitemap.
+A minimalist, WhatsApp-first website for Flyttiva's moving services. Built with Next.js and designed around a focused black, warm-ivory, and muted-gold visual system.
+
+## Pages
+
+- Home
+- Services
+- Pricing
+- Contact
+
+Every booking action opens a prefilled WhatsApp conversation with Flyttiva.
 
 ## Development
 

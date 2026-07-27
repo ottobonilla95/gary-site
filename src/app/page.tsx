@@ -1,90 +1,189 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, Clock3, MapPin, Shield, Star } from "lucide-react";
-import { FullQuoteForm } from "@/components/full-quote-form";
-import { QuickQuoteForm } from "@/components/quick-quote-form";
-import { services, testimonials } from "@/data/content";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Check,
+  MessageCircle,
+  MoveRight,
+  ShieldCheck,
+} from "lucide-react";
+import { frequentlyAskedQuestions, services } from "@/data/content";
+import { generalBookingMessage, getWhatsAppUrl } from "@/lib/whatsapp";
+
+const homeServices = [
+  {
+    ...services[0],
+    label: "Hem",
+  },
+  {
+    ...services[1],
+    label: "Företag",
+  },
+  {
+    slug: "helhetslosning",
+    title: "Packning & städning",
+    short: "Vi tar hand om detaljerna före och efter.",
+    description: "Komplettera flytten med professionell packhjälp, material och noggrann flyttstädning.",
+    image: "/images/packing.avif",
+    message: "Hej Flyttiva! Jag vill gärna ha hjälp med packning och flyttstädning.",
+    label: "Komplett",
+  },
+];
+
+const bookingUrl = getWhatsAppUrl(generalBookingMessage);
 
 export default function HomePage() {
   return (
     <>
-      <section className="home-hero">
-        <Image className="home-hero__image" src="/images/hero.avif" alt="Professional moving services landscape" fill priority sizes="100vw" />
-        <div className="home-hero__overlay" />
-        <div className="home-hero__content shell">
-          <div className="hero-copy">
-            <div className="eyebrow"><span /> Sveriges Pålitligaste Flyttfirma</div>
-            <h1>Flytta Smidigt <em>och Tryggt</em></h1>
-            <p>Vi erbjuder kompletta flyttjänster för privatpersoner och företag. Från lägenheter till kontor – vi gör din flytt enkel, strukturerad och helt stressfri.</p>
+      <section className="lux-hero">
+        <div className="lux-hero__grid shell">
+          <div className="lux-hero__copy">
+            <span className="kicker kicker--light">Flytthjälp i hela Sverige</span>
+            <h1>En enklare väg till <em>nästa kapitel.</em></h1>
+            <p>
+              Personlig och professionell flytthjälp för hem och företag — planerad med omsorg, utförd med precision.
+            </p>
+            <div className="hero-actions">
+              <a className="button button--ivory" href={bookingUrl} target="_blank" rel="noreferrer">
+                <MessageCircle /> Planera på WhatsApp <ArrowUpRight />
+              </a>
+              <a className="quiet-link quiet-link--light" href="#services">
+                Utforska tjänster <ArrowDownRight />
+              </a>
+            </div>
+            <p className="hero-note"><span /> Kostnadsfri förfrågan · Svar inom 24 timmar</p>
           </div>
-          <QuickQuoteForm />
+
+          <div className="lux-hero__visual">
+            <Image
+              src="/images/hero.avif"
+              alt="Flyttkartonger i ett ljust, modernt hem"
+              fill
+              priority
+              sizes="(max-width: 800px) 100vw, 48vw"
+            />
+            <div className="hero-image-note">
+              <span>01</span>
+              <p>Från första kartongen till sista detaljen.</p>
+            </div>
+          </div>
+        </div>
+        <div className="trust-strip shell" aria-label="Flyttiva fördelar">
+          <span><ShieldCheck /> Försäkrad flytt</span>
+          <span>Erfaret team</span>
+          <span>Hela Sverige</span>
+          <span>7 dagar i veckan</span>
         </div>
       </section>
 
-      <section className="home-services section">
-        <div className="home-services__grid shell">
-          <div className="section-intro">
-            <h2>Våra <span>Tjänster</span></h2>
-            <p>Vi erbjuder ett komplett utbud av flyttjänster anpassade efter dina specifika behov. Varje uppdrag hanteras med största omsorg och precision.</p>
-            <Link className="text-link" href="/services">Se Alla Tjänster <ArrowRight /></Link>
-          </div>
-          <div className="home-service-cards">
-            {services.slice(0, 4).map((service) => (
-              <article className="home-service-card" key={service.id}>
-                <div className="home-service-card__image"><Image src={service.image} alt={service.title} fill sizes="(max-width: 800px) 100vw, 25vw" /></div>
-                <div className="home-service-card__body">
-                  <div className="service-title-line"><h3>{service.title}</h3><strong>Från {service.price} kr</strong></div>
-                  <p>{service.description}</p>
-                  <Link href="/services">Läs mer <ArrowRight /></Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="why-section section">
-        <div className="why-grid shell">
-          <div className="why-copy">
-            <h2>Varför Välja <span>Flyttiva?</span></h2>
-            <p>Med över ett decennium i branschen har vi förfinat konsten att flytta. Vi kombinerar effektivitet med extrem noggrannhet för att säkerställa att dina ägodelar hanteras med respekt.</p>
-            <div className="benefit"><Shield /><div><h4>Fullständig Försäkring</h4><p>Dina ägodelar är skyddade under hela processen.</p></div></div>
-            <div className="benefit"><Clock3 /><div><h4>Punktlighet Garanterad</h4><p>Vi respekterar din tid och håller alltid överenskomna tider.</p></div></div>
-            <div className="benefit"><MapPin /><div><h4>Lokal &amp; Nationell</h4><p>Oavsett om du flyttar runt hörnet eller över hela landet.</p></div></div>
-          </div>
-          <div className="why-image"><Image src="/images/moving-team.avif" alt="Moving team at work" fill sizes="(max-width: 800px) 100vw, 45vw" /></div>
-        </div>
-      </section>
-
-      <section className="testimonials section">
+      <section className="home-services section" id="services">
         <div className="shell">
-          <div className="section-heading">
-            <h2>Kundernas Ord</h2>
-            <p>Läs vad våra tidigare kunder har att säga om sin upplevelse med oss. Deras förtroende är vårt starkaste bevis på kvalitet.</p>
+          <div className="editorial-heading">
+            <div>
+              <span className="kicker">Våra tjänster</span>
+              <h2>Allt du behöver.<br /> <em>Inget du inte gör.</em></h2>
+            </div>
+            <div className="editorial-heading__side">
+              <p>Välj det som passar din flytt. Vi hjälper dig att forma resten i ett enkelt samtal.</p>
+              <Link className="quiet-link" href="/services">Se alla tjänster <MoveRight /></Link>
+            </div>
           </div>
-          <div className="testimonial-grid">
-            {testimonials.map((testimonial) => (
-              <article className="testimonial-card" key={testimonial.name}>
-                <div className="stars" aria-label={`${testimonial.rating} av 5 stjärnor`}>
-                  {[1, 2, 3, 4, 5].map((star) => <Star className={star <= testimonial.rating ? "filled" : ""} key={star} />)}
+
+          <div className="home-service-grid">
+            {homeServices.map((service, index) => (
+              <article className="home-service-card" key={service.slug}>
+                <div className="home-service-card__image">
+                  <Image src={service.image} alt={service.title} fill sizes="(max-width: 760px) 100vw, 33vw" />
+                  <span>{service.label}</span>
                 </div>
-                <p>“{testimonial.quote}”</p>
-                <div><strong>{testimonial.name}</strong><span>{testimonial.move}</span></div>
+                <div className="home-service-card__body">
+                  <div className="service-card-title"><span>0{index + 1}</span><h3>{service.title}</h3></div>
+                  <p>{service.description}</p>
+                  <a href={getWhatsAppUrl(service.message)} target="_blank" rel="noreferrer" aria-label={`Fråga om ${service.title}`}>
+                    Be om offert <ArrowUpRight />
+                  </a>
+                </div>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="final-quote section" id="quote-form">
-        <div className="final-quote__grid shell">
-          <div className="final-quote__copy">
-            <div className="boxes-image"><Image src="/images/moving-boxes.avif" alt="Moving boxes" fill sizes="300px" /></div>
-            <h2>Redo att ta nästa steg?</h2>
-            <p>Fyll i formuläret så återkommer vi med en skräddarsydd offert baserad på dina specifika behov. Helt kostnadsfritt och utan förpliktelser.</p>
-            <ul><li><Check /> Svar inom 24 timmar</li><li><Check /> Transparent prissättning</li><li><Check /> Personlig rådgivning</li></ul>
+      <section className="process-section section" id="process">
+        <div className="process-grid shell">
+          <div className="process-intro">
+            <span className="kicker kicker--light">Så fungerar det</span>
+            <h2>Tre steg.<br /> <em>En lugn flytt.</em></h2>
+            <p>Du berättar vad du behöver. Vi löser planeringen, logistiken och det praktiska.</p>
           </div>
-          <FullQuoteForm />
+          <ol className="process-list">
+            <li>
+              <span>01</span>
+              <div><h3>Skriv till oss</h3><p>Skicka adresser, önskat datum och bostadsstorlek på WhatsApp.</p></div>
+            </li>
+            <li>
+              <span>02</span>
+              <div><h3>Få en tydlig plan</h3><p>Vi återkommer med upplägg, pris och allt som ingår — utan överraskningar.</p></div>
+            </li>
+            <li>
+              <span>03</span>
+              <div><h3>Vi flyttar</h3><p>Vårt team kommer i tid och tar hand om flytten från start till mål.</p></div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section className="confidence-section section">
+        <div className="confidence-grid shell">
+          <div className="confidence-image">
+            <Image src="/images/moving-team.avif" alt="Flyttivas team bär en flyttlåda" fill sizes="(max-width: 800px) 100vw, 50vw" />
+            <div className="confidence-badge"><strong>100%</strong><span>omsorg i varje steg</span></div>
+          </div>
+          <div className="confidence-copy">
+            <span className="kicker">Trygghet ingår</span>
+            <h2>Du flyttar livet.<br /> <em>Vi flyttar resten.</em></h2>
+            <p className="confidence-lead">En bra flytt märks inte i stressen — den märks i lugnet. Därför får du en tydlig kontakt, varsam hantering och full överblick hela vägen.</p>
+            <ul>
+              <li><Check /> Dina ägodelar är försäkrade</li>
+              <li><Check /> Punktligt och erfaret team</li>
+              <li><Check /> Tydligt pris före flyttdagen</li>
+            </ul>
+            <blockquote>
+              <p>“Otroligt proffsiga, snabba och varsamma. Hela flytten kändes enkel från första kontakt.”</p>
+              <cite>— Anna, Stockholm</cite>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section className="faq-section section" id="faq">
+        <div className="faq-layout shell">
+          <div className="faq-intro">
+            <span className="kicker">Bra att veta</span>
+            <h2>Vanliga frågor,<br /> <em>enkla svar.</em></h2>
+            <p>Undrar du något annat? Skriv direkt till oss så hjälper vi dig.</p>
+            <a className="quiet-link" href={bookingUrl} target="_blank" rel="noreferrer">Ställ en fråga <ArrowUpRight /></a>
+          </div>
+          <div className="faq-list">
+            {frequentlyAskedQuestions.map((item, index) => (
+              <details key={item.question} open={index === 0}>
+                <summary><span>0{index + 1}</span>{item.question}<i>+</i></summary>
+                <p>{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="closing-cta section">
+        <div className="closing-cta__inner shell">
+          <span className="kicker kicker--light">Redo när du är</span>
+          <h2>Låt oss göra flytten<br /> <em>lite lättare.</em></h2>
+          <p>Fyra uppgifter räcker för att komma igång: från, till, datum och bostadsstorlek.</p>
+          <a className="button button--ivory" href={bookingUrl} target="_blank" rel="noreferrer">
+            <MessageCircle /> Starta på WhatsApp <ArrowUpRight />
+          </a>
         </div>
       </section>
     </>
