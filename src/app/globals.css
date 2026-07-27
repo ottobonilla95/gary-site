@@ -274,6 +274,31 @@ h2 em {
   color: var(--white);
 }
 
+.language-switcher {
+  min-height: 38px;
+  margin-left: 28px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ivory);
+  background: #1d1d1b;
+  border: 1px solid #3c3b37;
+  border-radius: 999px;
+}
+
+.language-switcher select {
+  padding: 0 2px 0 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+}
+
 .header-quote {
   min-height: 46px;
   margin-left: 38px;
@@ -1286,7 +1311,11 @@ h2 em {
   }
 
   .header-quote {
-    margin-left: 24px;
+    margin-left: 16px;
+  }
+
+  .language-switcher {
+    margin-left: 18px;
   }
 
   .lux-hero__grid {
@@ -1320,10 +1349,14 @@ h2 em {
     display: none;
   }
 
+  .language-switcher {
+    margin-left: auto;
+  }
+
   .mobile-toggle {
     width: 42px;
     height: 42px;
-    margin-left: auto;
+    margin-left: 12px;
     display: grid;
     place-items: center;
     color: var(--ivory);
@@ -1506,6 +1539,11 @@ h2 em {
 
   .brand__copy small {
     display: none;
+  }
+
+  .language-switcher {
+    min-height: 36px;
+    padding-inline: 8px;
   }
 
   .kicker {

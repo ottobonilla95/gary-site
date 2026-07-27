@@ -4,13 +4,15 @@ import type { FormEvent, MouseEvent } from "react";
 import { useRef } from "react";
 import { ArrowUpRight, MessageCircle, X } from "lucide-react";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { getUi, type Language } from "@/lib/i18n";
 
 function value(formData: FormData, name: string) {
   return String(formData.get(name) ?? "").trim();
 }
 
-export function BookingDialog() {
+export function BookingDialog({ language }: { language: Language }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const t = getUi(language).booking;
 
   function openDialog() {
     dialogRef.current?.showModal();
@@ -28,7 +30,7 @@ export function BookingDialog() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const message = `Hej Flyttiva!
+    const message = language === "sv" ? `Hej Flyttiva!
 
 Jag vill boka en flytt.
 
@@ -46,7 +48,25 @@ Adress: ${value(formData, "toAddress")}
 Våning: ${value(formData, "toFloor")}
 Hiss: ${value(formData, "toElevator")}
 
-Beskrivning: ${value(formData, "description") || "Ingen ytterligare information"}`;
+Beskrivning: ${value(formData, "description") || t.emptyDescription}` : `Hello Flyttiva!
+
+I would like to book a move.
+
+Name: ${value(formData, "name")}
+Phone: ${value(formData, "phone")}
+Email: ${value(formData, "email")}
+
+FROM
+Address: ${value(formData, "fromAddress")}
+Floor: ${value(formData, "fromFloor")}
+Lift: ${value(formData, "fromElevator")}
+
+TO
+Address: ${value(formData, "toAddress")}
+Floor: ${value(formData, "toFloor")}
+Lift: ${value(formData, "toElevator")}
+
+Description: ${value(formData, "description") || t.emptyDescription}`;
 
     window.open(getWhatsAppUrl(message), "_blank", "noopener,noreferrer");
     closeDialog();
@@ -55,18 +75,18 @@ Beskrivning: ${value(formData, "description") || "Ingen ytterligare information"
   return (
     <>
       <button className="button button--ivory hero-booking" type="button" aria-haspopup="dialog" onClick={openDialog}>
-        <MessageCircle /> Boka din flytt <ArrowUpRight />
+        <MessageCircle /> {t.button} <ArrowUpRight />
       </button>
 
       <dialog className="booking-dialog" ref={dialogRef} aria-labelledby="booking-dialog-title" onClick={handleBackdropClick}>
         <div className="booking-dialog__panel">
           <div className="booking-dialog__header">
             <div>
-              <span>Bokningsförfrågan</span>
-              <h2 id="booking-dialog-title">Berätta om din flytt</h2>
-              <p>Fyll i detaljerna nedan. När du fortsätter öppnas WhatsApp med allt färdigt att skicka.</p>
+              <span>{t.eyebrow}</span>
+              <h2 id="booking-dialog-title">{t.title}</h2>
+              <p>{t.intro}</p>
             </div>
-            <button className="booking-dialog__close" type="button" aria-label="Stäng bokningsformuläret" onClick={closeDialog}>
+            <button className="booking-dialog__close" type="button" aria-label={t.close} onClick={closeDialog}>
               <X />
             </button>
           </div>
@@ -74,72 +94,72 @@ Beskrivning: ${value(formData, "description") || "Ingen ytterligare information"
           <form className="booking-form" onSubmit={handleSubmit}>
             <div className="booking-form__contact">
               <label>
-                <span>Namn</span>
-                <input name="name" type="text" autoComplete="name" placeholder="Ditt fullständiga namn" required />
+                <span>{t.name}</span>
+                <input name="name" type="text" autoComplete="name" placeholder={t.namePlaceholder} required />
               </label>
               <label>
-                <span>Telefonnummer</span>
+                <span>{t.phone}</span>
                 <input name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="070 123 45 67" required />
               </label>
               <label className="booking-form__wide">
-                <span>E-post</span>
-                <input name="email" type="email" autoComplete="email" inputMode="email" placeholder="namn@exempel.se" required />
+                <span>{t.email}</span>
+                <input name="email" type="email" autoComplete="email" inputMode="email" placeholder={t.emailPlaceholder} required />
               </label>
             </div>
 
             <fieldset>
-              <legend>Från</legend>
+              <legend>{t.from}</legend>
               <div className="booking-form__address">
                 <label>
-                  <span>Adress</span>
-                  <input name="fromAddress" type="text" placeholder="Gatuadress, postnummer och ort" required />
+                  <span>{t.address}</span>
+                  <input name="fromAddress" type="text" placeholder={t.addressPlaceholder} required />
                 </label>
                 <label>
-                  <span>Våning</span>
-                  <input name="fromFloor" type="text" placeholder="T.ex. 3 eller BV" required />
+                  <span>{t.floor}</span>
+                  <input name="fromFloor" type="text" placeholder={t.fromFloorPlaceholder} required />
                 </label>
                 <label>
-                  <span>Finns hiss?</span>
+                  <span>{t.elevator}</span>
                   <select name="fromElevator" defaultValue="" required>
-                    <option value="" disabled>Välj</option>
-                    <option value="Ja">Ja</option>
-                    <option value="Nej">Nej</option>
+                    <option value="" disabled>{t.choose}</option>
+                    <option value={t.yes}>{t.yes}</option>
+                    <option value={t.no}>{t.no}</option>
                   </select>
                 </label>
               </div>
             </fieldset>
 
             <fieldset>
-              <legend>Till</legend>
+              <legend>{t.to}</legend>
               <div className="booking-form__address">
                 <label>
-                  <span>Adress</span>
-                  <input name="toAddress" type="text" placeholder="Gatuadress, postnummer och ort" required />
+                  <span>{t.address}</span>
+                  <input name="toAddress" type="text" placeholder={t.addressPlaceholder} required />
                 </label>
                 <label>
-                  <span>Våning</span>
-                  <input name="toFloor" type="text" placeholder="T.ex. 2 eller BV" required />
+                  <span>{t.floor}</span>
+                  <input name="toFloor" type="text" placeholder={t.toFloorPlaceholder} required />
                 </label>
                 <label>
-                  <span>Finns hiss?</span>
+                  <span>{t.elevator}</span>
                   <select name="toElevator" defaultValue="" required>
-                    <option value="" disabled>Välj</option>
-                    <option value="Ja">Ja</option>
-                    <option value="Nej">Nej</option>
+                    <option value="" disabled>{t.choose}</option>
+                    <option value={t.yes}>{t.yes}</option>
+                    <option value={t.no}>{t.no}</option>
                   </select>
                 </label>
               </div>
             </fieldset>
 
             <label className="booking-form__description">
-              <span>Beskrivning</span>
-              <textarea name="description" rows={4} placeholder="Berätta gärna om bostadsstorlek, önskat datum, tunga föremål eller annat vi behöver känna till." />
+              <span>{t.description}</span>
+              <textarea name="description" rows={4} placeholder={t.descriptionPlaceholder} />
             </label>
 
             <div className="booking-form__footer">
-              <p>Ingen bindande bokning. Vi bekräftar upplägg och pris med dig först.</p>
+              <p>{t.note}</p>
               <button className="button booking-form__submit" type="submit">
-                <MessageCircle /> Fortsätt till WhatsApp <ArrowUpRight />
+                <MessageCircle /> {t.submit} <ArrowUpRight />
               </button>
             </div>
           </form>

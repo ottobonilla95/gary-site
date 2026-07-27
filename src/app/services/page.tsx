@@ -1,36 +1,17 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, MessageCircle } from "lucide-react";
 import { ServicesGrid } from "@/components/services-grid";
-import { generalBookingMessage, getWhatsAppUrl } from "@/lib/whatsapp";
+import { getUi } from "@/lib/i18n";
+import { getRequestLanguage } from "@/lib/i18n-server";
+import { getGeneralBookingMessage, getWhatsAppUrl } from "@/lib/whatsapp";
 
-export const metadata: Metadata = {
-  title: "Tjänster",
-  description: "Omsorgsfull flytthjälp för hem och företag — från packning till flyttstädning.",
-};
+export async function generateMetadata(): Promise<Metadata> { const t=getUi(await getRequestLanguage()).servicesPage; return {title:t.metaTitle,description:t.metaDescription}; }
 
-export default function ServicesPage() {
-  return (
-    <>
-      <section className="inner-hero">
-        <div className="shell inner-hero__content">
-          <span className="kicker kicker--light">Tjänster</span>
-          <h1>Flytthjälp,<br /> <em>på ditt sätt.</em></h1>
-          <p>Välj en komplett lösning eller bara den hjälp du behöver. Vi anpassar team, tid och upplägg efter din flytt.</p>
-        </div>
-      </section>
-      <section className="services-page section">
-        <ServicesGrid />
-      </section>
-      <section className="closing-cta section">
-        <div className="closing-cta__inner shell">
-          <span className="kicker kicker--light">Personlig planering</span>
-          <h2>Osäker på vad<br /> <em>du behöver?</em></h2>
-          <p>Beskriv flytten i ett meddelande. Vi hjälper dig hitta rätt upplägg.</p>
-          <a className="button button--ivory" href={getWhatsAppUrl(generalBookingMessage)} target="_blank" rel="noreferrer">
-            <MessageCircle /> Fråga oss på WhatsApp <ArrowUpRight />
-          </a>
-        </div>
-      </section>
-    </>
-  );
+export default async function ServicesPage() {
+  const language=await getRequestLanguage(); const t=getUi(language).servicesPage;
+  return <>
+    <section className="inner-hero"><div className="shell inner-hero__content"><span className="kicker kicker--light">{t.kicker}</span><h1>{t.title}</h1><p>{t.text}</p></div></section>
+    <section className="services-page section"><ServicesGrid language={language} /></section>
+    <section className="closing-cta section"><div className="closing-cta__inner shell"><span className="kicker kicker--light">{t.ctaKicker}</span><h2>{t.ctaTitle}</h2><p>{t.ctaText}</p><a className="button button--ivory" href={getWhatsAppUrl(getGeneralBookingMessage(language))} target="_blank" rel="noreferrer"><MessageCircle /> {t.ctaButton} <ArrowUpRight /></a></div></section>
+  </>;
 }
