@@ -1,12 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowDownRight,
   ArrowUpRight,
   Check,
   MessageCircle,
   MoveRight,
-  ShieldCheck,
 } from "lucide-react";
 import { frequentlyAskedQuestions, services } from "@/data/content";
 import { generalBookingMessage, getWhatsAppUrl } from "@/lib/whatsapp";
@@ -39,20 +37,13 @@ export default function HomePage() {
       <section className="lux-hero">
         <div className="lux-hero__grid shell">
           <div className="lux-hero__copy">
-            <span className="kicker kicker--light">Flytthjälp i hela Sverige</span>
-            <h1>En enklare väg till <em>nästa kapitel.</em></h1>
+            <h1>Flytthjälp utan krångel.</h1>
             <p>
-              Personlig och professionell flytthjälp för hem och företag — planerad med omsorg, utförd med precision.
+              Vi hjälper privatpersoner och företag att flytta tryggt, effektivt och utan onödig stress — i hela Sverige.
             </p>
-            <div className="hero-actions">
-              <a className="button button--ivory" href={bookingUrl} target="_blank" rel="noreferrer">
-                <MessageCircle /> Planera på WhatsApp <ArrowUpRight />
-              </a>
-              <a className="quiet-link quiet-link--light" href="#services">
-                Utforska tjänster <ArrowDownRight />
-              </a>
-            </div>
-            <p className="hero-note"><span /> Kostnadsfri förfrågan · Svar inom 24 timmar</p>
+            <a className="button button--ivory hero-booking" href={bookingUrl} target="_blank" rel="noreferrer">
+              <MessageCircle /> Boka din flytt <ArrowUpRight />
+            </a>
           </div>
 
           <div className="lux-hero__visual">
@@ -63,17 +54,7 @@ export default function HomePage() {
               priority
               sizes="(max-width: 800px) 100vw, 48vw"
             />
-            <div className="hero-image-note">
-              <span>01</span>
-              <p>Från första kartongen till sista detaljen.</p>
-            </div>
           </div>
-        </div>
-        <div className="trust-strip shell" aria-label="Flyttiva fördelar">
-          <span><ShieldCheck /> Försäkrad flytt</span>
-          <span>Erfaret team</span>
-          <span>Hela Sverige</span>
-          <span>7 dagar i veckan</span>
         </div>
       </section>
 
