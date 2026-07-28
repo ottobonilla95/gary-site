@@ -25,7 +25,7 @@ Open [http://localhost:3000](http://localhost:3000).
 Copy `.env.example` to `.env.local` and configure:
 
 - `RESEND_API_KEY`: API key from Resend.
-- `BOOKING_NOTIFICATION_EMAIL`: private inbox that receives enquiries.
+- `BOOKING_NOTIFICATION_EMAIL`: private inboxes that receive enquiries, separated by commas when using more than one.
 - `BOOKING_FROM_EMAIL`: sender on a domain verified in Resend, for example `Flyttiva Bookings <bookings@mail.flyttiva.se>`.
 
 Add the same three values in Vercel under Project Settings → Environment Variables. `BOOKING_NOTIFICATION_EMAIL` is server-only and is never exposed on the site. For local form testing without sending email, set `BOOKING_EMAIL_MODE=preview`; do not set preview mode in production.

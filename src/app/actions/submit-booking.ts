@@ -78,30 +78,47 @@ export async function submitBooking(formData: FormData): Promise<BookingResult> 
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.BOOKING_NOTIFICATION_EMAIL;
+  const recipients = Array.from(
+    new Set(
+      (process.env.BOOKING_NOTIFICATION_EMAIL ?? "")
+        .split(",")
+        .map((email) => email.trim())
+        .filter((email) => /^\S+@\S+\.\S+$/.test(email)),
+    ),
+  );
   const from = process.env.BOOKING_FROM_EMAIL;
 
-  if (!apiKey || !to || !from) {
+  if (!apiKey || recipients.length === 0 || !from) {
     console.error("Booking email is missing required environment configuration.");
     return { ok: false, error: "configuration" };
   }
 
   try {
     const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send(
-      {
-        from,
-        to: [to],
-        replyTo: fields.email,
-        subject,
-        text,
-      },
-      { headers: { "Idempotency-Key": `booking-${submissionId}` } },
+    const deliveries = await Promise.all(
+      recipients.map(async (recipient, index) => {
+        const { error } = await resend.emails.send(
+          {
+            from,
+            to: [recipient],
+            replyTo: fields.email,
+            subject,
+            text,
+          },
+          { headers: { "Idempotency-Key": `booking-${submissionId}-${index}` } },
+        );
+        return error;
+      }),
     );
+    const failures = deliveries.filter(Boolean);
 
-    if (error) {
-      console.error("Booking email delivery failed.", error);
+    if (failures.length === recipients.length) {
+      console.error("Booking email delivery failed for every recipient.", failures);
       return { ok: false, error: "delivery" };
+    }
+
+    if (failures.length > 0) {
+      console.error("Booking email delivery failed for one or more recipients.", failures);
     }
 
     return { ok: true, reference };
