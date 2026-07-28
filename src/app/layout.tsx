@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BookingProvider } from "@/components/booking-provider";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getRequestLanguage } from "@/lib/i18n-server";
@@ -17,9 +18,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const language = await getRequestLanguage();
   return (
-    <html lang={language}>
+    <html lang={language} data-scroll-behavior="smooth">
       <body>
         <BookingProvider language={language}>
+          <ScrollReveal />
           <SiteHeader language={language} />
           <main>{children}</main>
           <SiteFooter language={language} />
